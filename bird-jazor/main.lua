@@ -9,6 +9,8 @@ WINDIW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
+GRAVITY = 20
+
 local background = love.graphics.newImage('background.png')
 local backgroundScroll = 0
 
@@ -48,6 +50,8 @@ function love.update(dt)
         % BACKGROUND_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
         % VIRTUAL_WIDTH
+
+    bird:update(dt)
 end
 
 
