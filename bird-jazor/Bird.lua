@@ -1,5 +1,6 @@
 Bird = Class{}
 
+GRAVITY = 20
 JUMP_VELOCITY = -5
 COLLISION_ALLOWANCE = 2
 
