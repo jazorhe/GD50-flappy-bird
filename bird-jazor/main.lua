@@ -8,6 +8,7 @@ require 'PipePair'
 require 'StateMachine'
 require 'state/BaseState'
 require 'state/PlayState'
+require 'state/ScoreState'
 require 'state/TitleScreenState'
 
 WINDOW_WIDTH = 1280
@@ -53,7 +54,8 @@ function love.load()
     -- initialize
     gStateMachine = StateMachine {
         ['title'] = function() return TitleScreenState() end,
-        ['play']  = function() return PlayState() end
+        ['play']  = function() return PlayState() end,
+        ['score'] = function() return ScoreState() end
     }
     gStateMachine:change('title')
 
