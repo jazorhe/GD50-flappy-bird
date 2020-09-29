@@ -5,6 +5,7 @@ require 'Bird'
 require 'Pipe'
 require 'PipePair'
 
+require 'Util'
 require 'StateMachine'
 require 'state/BaseState'
 require 'state/PlayState'
@@ -45,6 +46,7 @@ function love.load()
     hugeFont   = love.graphics.newFont('flappy.ttf', 56)
     love.graphics.setFont(flappyFont)
 
+    -- initialize sound effects
     sounds = {
         ['jump']      = love.audio.newSource('jump.wav', 'static'),
         ['hurt']      = love.audio.newSource('hurt.wav', 'static'),
@@ -63,7 +65,7 @@ function love.load()
         resizable = true
     })
 
-    -- initialize
+    -- initialize global state machine
     gStateMachine = StateMachine {
         ['title'] = function() return TitleScreenState() end,
         ['countdown']  = function() return CountdownState() end,
