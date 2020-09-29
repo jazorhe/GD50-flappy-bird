@@ -1,8 +1,7 @@
 PipePair = Class{}
 
-local GAP_HEIGHT = 90
-
 function PipePair:init(y)
+    GAP_HEIGHT = math.random(90, 140)
     self.x = VIRTUAL_WIDTH + 32
     self.y = y
     self.pipes = {
