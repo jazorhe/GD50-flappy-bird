@@ -74,6 +74,7 @@ function love.load()
 
     -- initialize input table
     love.keyboard.keysPressed = {}
+    love.mouse.buttonPressed  = {}
 end
 
 function love.resize(w, h)
@@ -91,6 +92,12 @@ function love.keypressed(key)
     end
 end
 
+
+function love.mousepressed(x, y, button, istouch)
+    love.mouse.buttonPressed[button] = true
+end
+
+
 function love.keyboard.wasPressed(key)
     -- return key pressed from last frame, to be used by other classes in game
     if love.keyboard.keysPressed[key] == true then
@@ -99,6 +106,15 @@ function love.keyboard.wasPressed(key)
         return false
     end
 end
+
+function love.mouse.wasPressed(x, y, button, istouch)
+    if love.mouse.buttonPressed[button] == true then
+        return true
+    else
+        return false
+    end
+end
+
 
 function love.update(dt)
     -- update background and ground scrolling offsets
@@ -110,6 +126,7 @@ function love.update(dt)
 
     -- reset input table
     love.keyboard.keysPressed = {}
+    love.mouse.buttonPressed  = {}
 end
 
 function love.draw()
