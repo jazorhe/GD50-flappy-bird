@@ -11,13 +11,15 @@ end
 function PlayState:update(dt)
 
     self.spawnTimer = self.spawnTimer + dt
-    if self.spawnTimer > 2 then
-        local y = math.max(-PIPE_HEIGHT + 10,
-        math.min(self.lastY + math.random(-20, 20) , VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
-        self.lastY = y
+    if self.spawnTimer > 1.8 then
+        if math.random(100) == 1 or self.spawnTimer > 4 then
+            local y = math.max(-PIPE_HEIGHT + 10,
+            math.min(self.lastY + math.random(-20, 20) , VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+            self.lastY = y
 
-        table.insert(self.pipePairs, PipePair(y))
-        self.spawnTimer = 0
+            table.insert(self.pipePairs, PipePair(y))
+            self.spawnTimer = 0
+        end
     end
 
     self.bird:update(dt)
