@@ -8,7 +8,30 @@ function PlayState:init()
     self.lastY      = -PIPE_HEIGHT + math.random(80) + 20
 end
 
+function PlayState:enter(params)
+    if params then
+        self.bird       = params['bird']
+        self.pipePairs  = params['pipePairs']
+        self.spawnTimer = params['spawnTimer']
+        self.score      = params['score']
+        self.lastY      = params['lastY']
+        sounds['music']:play()
+        sounds['pause']:play()
+    end
+end
+
 function PlayState:update(dt)
+
+    if love.keyboard.wasPressed('p') then
+        self.playParams = {
+            ['bird'] = self.bird,
+            ['pipePairs'] = self.pipePairs,
+            ['spawnTimer'] = self.spawnTimer,
+            ['score'] = self.score,
+            ['lastY'] = self.lastY
+        }
+        gStateMachine:change('pause', self.playParams)
+    end
 
     self.spawnTimer = self.spawnTimer + dt
     if self.spawnTimer > 1.8 then
@@ -71,6 +94,9 @@ function PlayState:render()
 
     love.graphics.setFont(flappyFont)
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
+
+    love.graphics.setFont(mediumFont)
+    love.graphics.print('||', VIRTUAL_WIDTH - 17, 8)
 
     self.bird:render()
 end
