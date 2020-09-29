@@ -1,12 +1,23 @@
 ScoreState = Class{__includes = BaseState}
 
+COOLDOWN = 0.75
+
+function ScoreState:init()
+    self.timer = 0
+end
+
 function ScoreState:enter(params)
     self.score = params.score
 end
 
 function ScoreState:update(dt)
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('play')
+    self.timer = self.timer + dt
+    
+    if self.timer > COOLDOWN then
+        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or
+            love.mouse.wasPressed(0, 0, 1, 1) then
+            gStateMachine:change('play')
+        end
     end
 end
 
