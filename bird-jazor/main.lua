@@ -79,7 +79,7 @@ function love.load()
 
     -- initialize input table
     love.keyboard.keysPressed = {}
-    love.mouse.buttonPressed  = {}
+    love.mouse.buttonsPressed  = {}
 end
 
 function love.resize(w, h)
@@ -99,7 +99,22 @@ end
 
 
 function love.mousepressed(x, y, button, istouch)
-    love.mouse.buttonPressed[button] = true
+    if button == 1 then
+        button = 'primary'
+    elseif button == 2 then
+        button = 'secondary'
+    elseif button == 3 then
+        button = 'middle'
+    else
+        button = 'unknown'
+    end
+
+    love.mouse.buttonsPressed[button] = {
+        ['x'] = x,
+        ['y'] = y,
+        ['pressed'] = true,
+        ['istouch'] = istouch
+    }
 end
 
 
@@ -112,14 +127,51 @@ function love.keyboard.wasPressed(key)
     end
 end
 
-function love.mouse.wasPressed(x, y, button, istouch)
-    if love.mouse.buttonPressed[button] == true then
+function love.mouse.wasPressed(button)
+    if button == 1 then
+        button = 'primary'
+    elseif button == 2 then
+        button = 'secondary'
+    elseif button == 3 then
+        button = 'middle'
+    else
+        button = 'unknown'
+    end
+
+    if love.mouse.buttonsPressed[button] and love.mouse.buttonsPressed[button]['pressed'] == true then
         return true
     else
         return false
     end
 end
 
+local function inCircle(cx, cy, radius, x, y)
+    local dx = cx - x
+    local dy = cy - y
+    return dx * dx + dy * dy <= radius * radius
+end
+
+function love.mouse.areaWasPressed(cx, cy, radius, button)
+    if love.mouse.wasPressed(button) then
+        if button == 1 then
+            button = 'primary'
+        elseif button == 2 then
+            button = 'secondary'
+        elseif button == 3 then
+            button = 'middle'
+        else
+            button = 'unknown'
+        end
+
+        x = love.mouse.buttonsPressed[button]['x']
+        y = love.mouse.buttonsPressed[button]['y']
+
+        if inCircle(cx, cy, radius, x, y) then
+            return true
+        end
+    end
+    return false
+end
 
 function love.update(dt)
     -- update background and ground scrolling offsets
@@ -131,7 +183,7 @@ function love.update(dt)
 
     -- reset input table
     love.keyboard.keysPressed = {}
-    love.mouse.buttonPressed  = {}
+    love.mouse.buttonsPressed  = {}
 end
 
 function love.draw()

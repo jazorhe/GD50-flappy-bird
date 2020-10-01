@@ -22,7 +22,7 @@ end
 
 function PlayState:update(dt)
 
-    if love.keyboard.wasPressed('p') then
+    if love.keyboard.wasPressed('p') or love.mouse.areaWasPressed((VIRTUAL_WIDTH - 17) * 2.5, 8 * 2.5, 20 * 2.5, 1) then
         self.playParams = {
             ['bird'] = self.bird,
             ['pipePairs'] = self.pipePairs,

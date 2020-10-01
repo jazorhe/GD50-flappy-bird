@@ -22,7 +22,7 @@ function ScoreState:update(dt)
 
     if self.timer > COOLDOWN then
         if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or
-            love.mouse.wasPressed(0, 0, 1, 1) then
+            love.mouse.wasPressed(1) then
             gStateMachine:change('play')
         end
     end

@@ -8,8 +8,8 @@ function PauseState:enter(params)
 end
 
 function PauseState:update(dt)
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or love.keyboard.wasPressed('p') or love.mouse.wasPressed(0, 0, 1, 1) then
-        gStateMachine:change('play', self.playParams)
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or love.keyboard.wasPressed('p') or love.mouse.wasPressed(1) then
+        gStateMachine:change('countdown', self.playParams)
     end
 end
 
