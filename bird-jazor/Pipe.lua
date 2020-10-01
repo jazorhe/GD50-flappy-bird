@@ -1,6 +1,6 @@
 Pipe = Class{}
 
-local PIPE_IMAGE = love.graphics.newImage('pipe.png')
+local PIPE_IMAGE = love.graphics.newImage('images/pipe.png')
 local PIPE_SCROLL = -60
 
 PIPE_SPEED  = 60
