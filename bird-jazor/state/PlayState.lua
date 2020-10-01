@@ -22,6 +22,8 @@ end
 
 function PlayState:update(dt)
 
+    autoScroll(dt)
+
     if love.keyboard.wasPressed('p') or love.mouse.areaWasPressed((VIRTUAL_WIDTH - 17) * 2.5, 8 * 2.5, 20 * 2.5, 1) then
         self.playParams = {
             ['bird'] = self.bird,
@@ -88,6 +90,7 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
+
     for k , pair in pairs(self.pipePairs) do
         pair:render()
     end

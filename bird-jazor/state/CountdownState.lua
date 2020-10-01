@@ -31,9 +31,6 @@ function CountdownState:update(dt)
 end
 
 function CountdownState:render()
-    love.graphics.setFont(hugeFont)
-    love.graphics.printf(tostring(self.count), 0, 120, VIRTUAL_WIDTH, 'center')
-
     if self.params then
         for k , pair in pairs(self.params['pipePairs']) do
             pair:render()
@@ -42,4 +39,6 @@ function CountdownState:render()
         self.params['bird']:render()
     end
 
+    love.graphics.setFont(hugeFont)
+    love.graphics.printf(tostring(self.count), 0, 120, VIRTUAL_WIDTH, 'center')
 end

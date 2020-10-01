@@ -173,11 +173,13 @@ function love.mouse.areaWasPressed(cx, cy, radius, button)
     return false
 end
 
-function love.update(dt)
+function autoScroll(dt)
     -- update background and ground scrolling offsets
     backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+end
 
+function love.update(dt)
     -- update state machine
     gStateMachine:update(dt)
 
