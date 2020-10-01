@@ -6,7 +6,7 @@ MEDAL_GOLD   = 2
 MEDAL_BRONZE = 3
 
 function ScoreState:init()
-    self.spritesheet  = love.graphics.newImage('medals.png')
+    self.spritesheet  = love.graphics.newImage('images/medals.png')
     self.medalWidth   = 80
     self.medalHeight  = 90
     self.medalSprites = generateQuads(self.spritesheet, self.medalWidth, self.medalHeight)
@@ -22,8 +22,8 @@ function ScoreState:update(dt)
 
     if self.timer > COOLDOWN then
         if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or
-            love.mouse.wasPressed(0, 0, 1, 1) then
-            gStateMachine:change('play')
+            love.mouse.wasPressed(1) then
+            gStateMachine:change('countdown')
         end
     end
 end

@@ -20,10 +20,10 @@ WINDIW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
-local background = love.graphics.newImage('background.png')
+local background = love.graphics.newImage('images/background.png')
 local backgroundScroll = 0
 
-local ground = love.graphics.newImage('ground.png')
+local ground = love.graphics.newImage('images/ground.png')
 local groundScroll = 0
 
 local BACKGROUND_SCROLL_SPEED = 30
@@ -41,20 +41,20 @@ function love.load()
     love.window.setTitle('Flappy Bird - Jazor')
 
     -- initialize fonts
-    smallFont  = love.graphics.newFont('font.ttf',   8)
-    mediumFont = love.graphics.newFont('flappy.ttf', 14)
-    flappyFont = love.graphics.newFont('flappy.ttf', 28)
-    hugeFont   = love.graphics.newFont('flappy.ttf', 56)
+    smallFont  = love.graphics.newFont('fonts/font.ttf',   8)
+    mediumFont = love.graphics.newFont('fonts/flappy.ttf', 14)
+    flappyFont = love.graphics.newFont('fonts/flappy.ttf', 28)
+    hugeFont   = love.graphics.newFont('fonts/flappy.ttf', 56)
     love.graphics.setFont(flappyFont)
 
     -- initialize sound effects
     sounds = {
-        ['jump']      = love.audio.newSource('jump.wav', 'static'),
-        ['hurt']      = love.audio.newSource('hurt.wav', 'static'),
-        ['score']     = love.audio.newSource('score.wav', 'static'),
-        ['explosion'] = love.audio.newSource('explosion.wav', 'static'),
-        ['pause']     = love.audio.newSource('pause.wav', 'static'),
-        ['music']     = love.audio.newSource('marios_way.mp3', 'static')
+        ['jump']      = love.audio.newSource('sounds/jump.wav', 'static'),
+        ['hurt']      = love.audio.newSource('sounds/hurt.wav', 'static'),
+        ['score']     = love.audio.newSource('sounds/score.wav', 'static'),
+        ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static'),
+        ['pause']     = love.audio.newSource('sounds/pause.wav', 'static'),
+        ['music']     = love.audio.newSource('sounds/marios_way.mp3', 'static')
     }
 
     sounds['music']:setLooping(true)
@@ -79,7 +79,7 @@ function love.load()
 
     -- initialize input table
     love.keyboard.keysPressed = {}
-    love.mouse.buttonPressed  = {}
+    love.mouse.buttonsPressed  = {}
 end
 
 function love.resize(w, h)
@@ -99,7 +99,22 @@ end
 
 
 function love.mousepressed(x, y, button, istouch)
-    love.mouse.buttonPressed[button] = true
+    if button == 1 then
+        button = 'primary'
+    elseif button == 2 then
+        button = 'secondary'
+    elseif button == 3 then
+        button = 'middle'
+    else
+        button = 'unknown'
+    end
+
+    love.mouse.buttonsPressed[button] = {
+        ['x'] = x,
+        ['y'] = y,
+        ['pressed'] = true,
+        ['istouch'] = istouch
+    }
 end
 
 
@@ -112,26 +127,65 @@ function love.keyboard.wasPressed(key)
     end
 end
 
-function love.mouse.wasPressed(x, y, button, istouch)
-    if love.mouse.buttonPressed[button] == true then
+function love.mouse.wasPressed(button)
+    if button == 1 then
+        button = 'primary'
+    elseif button == 2 then
+        button = 'secondary'
+    elseif button == 3 then
+        button = 'middle'
+    else
+        button = 'unknown'
+    end
+
+    if love.mouse.buttonsPressed[button] and love.mouse.buttonsPressed[button]['pressed'] == true then
         return true
     else
         return false
     end
 end
 
+local function inCircle(cx, cy, radius, x, y)
+    local dx = cx - x
+    local dy = cy - y
+    return dx * dx + dy * dy <= radius * radius
+end
 
-function love.update(dt)
+function love.mouse.areaWasPressed(cx, cy, radius, button)
+    if love.mouse.wasPressed(button) then
+        if button == 1 then
+            button = 'primary'
+        elseif button == 2 then
+            button = 'secondary'
+        elseif button == 3 then
+            button = 'middle'
+        else
+            button = 'unknown'
+        end
+
+        x = love.mouse.buttonsPressed[button]['x']
+        y = love.mouse.buttonsPressed[button]['y']
+
+        if inCircle(cx, cy, radius, x, y) then
+            return true
+        end
+    end
+    return false
+end
+
+function autoScroll(dt)
     -- update background and ground scrolling offsets
     backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+end
 
+function love.update(dt)
     -- update state machine
     gStateMachine:update(dt)
 
     -- reset input table
     love.keyboard.keysPressed = {}
-    love.mouse.buttonPressed  = {}
+    love.mouse.buttonsPressed  = {}
 end
 
 function love.draw()

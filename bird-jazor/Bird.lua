@@ -5,7 +5,7 @@ JUMP_VELOCITY = -5
 COLLISION_ALLOWANCE = 2
 
 function Bird:init()
-    self.image  = love.graphics.newImage('bird.png')
+    self.image  = love.graphics.newImage('images/bird.png')
     self.width  = self.image:getWidth()
     self.height = self.image:getHeight()
 
@@ -18,9 +18,11 @@ end
 function Bird:update(dt)
     self.dy = self.dy + GRAVITY * dt
 
-    if love.keyboard.wasPressed('space') or love.mouse.wasPressed(0, 0, 1, 1) then
-        self.dy = JUMP_VELOCITY
-        sounds['jump']:play()
+    if love.keyboard.wasPressed('space') or love.mouse.wasPressed(1) then
+        if not love.mouse.areaWasPressed((VIRTUAL_WIDTH - 17) * 2.5, 8 * 2.5, 20 * 2.5, 1) then
+            self.dy = JUMP_VELOCITY
+            sounds['jump']:play()
+        end
     end
 
     self.y  = self.y  + self.dy
