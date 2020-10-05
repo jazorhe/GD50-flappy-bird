@@ -67,6 +67,11 @@ function love.load()
         resizable = true
     })
 
+    windowSize = {
+        ['w'] = WINDOW_WIDTH,
+        ['h'] = WINDIW_HEIGHT
+    }
+
     -- initialize global state machine
     gStateMachine = StateMachine {
         ['title'] = function() return TitleScreenState() end,
@@ -85,6 +90,10 @@ end
 function love.resize(w, h)
     -- Redefine love.resize() Function
     push:resize(w,h)
+    windowSize = {
+        ['w'] = w,
+        ['h'] = h
+    }
 end
 
 function love.keypressed(key)
