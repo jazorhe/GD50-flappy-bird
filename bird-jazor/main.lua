@@ -109,6 +109,8 @@ function love.mousepressed(x, y, button, istouch)
         button = 'unknown'
     end
 
+    -- x, y = push:toGame(x, y)
+
     love.mouse.buttonsPressed[button] = {
         ['x'] = x,
         ['y'] = y,
@@ -146,9 +148,13 @@ function love.mouse.wasPressed(button)
 end
 
 local function inCircle(cx, cy, radius, x, y)
-    local dx = cx - x
-    local dy = cy - y
-    return dx * dx + dy * dy <= radius * radius
+    if not x or not y then
+        return false
+    else
+        local dx = cx - x
+        local dy = cy - y
+        return dx * dx + dy * dy <= radius * radius
+    end
 end
 
 function love.mouse.areaWasPressed(cx, cy, radius, button)

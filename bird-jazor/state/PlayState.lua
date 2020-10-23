@@ -6,6 +6,8 @@ function PlayState:init()
     self.spawnTimer = 0
     self.score      = 0
     self.lastY      = -PIPE_HEIGHT + math.random(80) + 20
+    self.mouseX = 0
+    self.mouseY = 0
 end
 
 function PlayState:enter(params)
@@ -97,6 +99,9 @@ function PlayState:render()
 
     love.graphics.setFont(flappyFont)
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
+
+    -- love.graphics.print('mouseX: ' .. tostring(self.mouseX), 8, 60)
+    -- love.graphics.print('mousey: ' .. tostring(self.mouseY), 8, 120)
 
     love.graphics.setFont(mediumFont)
     love.graphics.print('||', VIRTUAL_WIDTH - 17, 8)
